@@ -99,7 +99,7 @@ async def get_response(cfg: Config, inp: str, files: List[str],
                 elif event.type == "refusal.delta":
                     refusal += event.delta
                     print(event.delta, end='', flush=True)
-        print('', end='', flush=True)
+        print('', flush=True)
         if refusal:
             raise ValueError(f"Model refused to answer: {refusal}")
         if not result:
