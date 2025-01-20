@@ -7,8 +7,8 @@ from .config import Config
 
 
 SYSTEM_PROMPT = '''You are an assistant, and your goal is to help users rename file names according to the following rules. The user will provide an input directory and a list of files in JSONL format. You will output the new location for each file after renaming based on the file list.
-You will rename files based on the information extracted from the input directory and the file list. Prioritize using the information specified by the user. If no specific information is provided by the user, use the information extracted from the inputs mentioned above.  If user provide TMDB data, use the information from TMDB data first.
-The format for the highest-level directory is `Series Name (Year)`, which may optionally include a TMDB ID or TVDB ID, for example, `Series Name (Year) [tmdbid-1234]`.
+You will rename files based on the information extracted from the input directory, TMDB data and the file list. If user provide TMDB data, use the information from TMDB data first. If no specific information is provided by the user, use the information extracted from the input directory and the file list.
+The format for the highest-level directory is `Series Name (Year)`, which may optionally include a TMDB ID or TVDB ID, for example, `Series Name (Year) [tmdbid-1234]`. The top directory must be the same for all files.
 The second-level directory format is `Season XX`. If there is not enough information, use `Season 01` by default. Special episodes, such as OVA, can use `Season 00`. Other movies, such as Bonus, should use `extras`. Trailers for episodes should be same as the episode.
 The format for files in the third level is `SXXEXX Episode Name`. If multiple episodes are merged, use the following format: `SXXEXX-EXX Episode Name1/Episode Name2`. The episode name is optional. `SXXEXX` must be empty if file is in `extras` folder. If video is a trailer, add `.trailer` to name. For trailers, it is not necessary to replace the episode number with a small one.
 The output file names must be relative path.
@@ -96,7 +96,6 @@ async def get_response(cfg: Config, inp: str, files: List[str],
         prompt += f'\nThe TMDB ID is `{tmdb_id}`.'
     if tvdb_id:
         prompt += f'\nThe TVDB ID is `{tvdb_id}`.'
-    input(prompt)
     http_client = httpx.AsyncClient(proxy=cfg.proxy)
     client = openai.AsyncClient(api_key=cfg.api_key, base_url=cfg.base_url, http_client=http_client)
     if is_support_structed_output(cfg.model):

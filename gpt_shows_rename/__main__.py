@@ -10,8 +10,11 @@ async def main():
     files = gen_input_list(cfg.input)
     tmdb_data = None
     if cfg.tmdb_id and not cfg.no_tmdb:
-        tmdb = TmdbClient(cfg)
-        tmdb_data = await tmdb.get_tmdb_data(cfg.tmdb_id)
+        if not cfg.tmdb_api_key:
+            print('WARN: TMDB API key is not set, skip TMDB data integration')
+        else:
+            tmdb = TmdbClient(cfg)
+            tmdb_data = await tmdb.get_tmdb_data(cfg.tmdb_id)
     res = await get_response(cfg, cfg.input, files, cfg.series_name, cfg.year, cfg.tmdb_id, cfg.tvdb_id, tmdb_data)
     for f in res.files:
         print(files[f.index], '->', f.name)
