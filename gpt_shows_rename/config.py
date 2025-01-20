@@ -41,6 +41,10 @@ class Config:
         return self._args.proxy if self._args.proxy is not None else self._yaml_config.get('proxy')
 
     @property
+    def season_number(self) -> Optional[int]:
+        return self._args.season_number
+
+    @property
     def series_name(self) -> Optional[str]:
         return self._args.series_name
 
@@ -86,6 +90,7 @@ def get_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument('-T', '--tvdb-id', type=int, help='TVDB ID (optional)')
     parser.add_argument('-H', '--hardlink', action='store_true', help='Use hardlink instead of symlink.')
     parser.add_argument('-n', '--no-tmdb', action='store_true', help='Do not use TMDB API to obtain data.')
+    parser.add_argument('-S', '--season-number', type=int, help='Season number (optional)')
     parser.add_argument('input', help='Input directory.')
     parser.add_argument('output', help='Output directory.')
     return parser

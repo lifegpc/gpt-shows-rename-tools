@@ -14,8 +14,8 @@ async def main():
             print('WARN: TMDB API key is not set, skip TMDB data integration')
         else:
             tmdb = TmdbClient(cfg)
-            tmdb_data = await tmdb.get_tmdb_data(cfg.tmdb_id)
-    res = await get_response(cfg, cfg.input, files, cfg.series_name, cfg.year, cfg.tmdb_id, cfg.tvdb_id, tmdb_data)
+            tmdb_data = await tmdb.get_tmdb_data(cfg.tmdb_id, cfg.season_number)
+    res = await get_response(cfg, cfg.input, files, cfg.series_name, cfg.year, cfg.tmdb_id, cfg.tvdb_id, tmdb_data, cfg.season_number)
     for f in res.files:
         print(files[f.index], '->', f.name)
     input('Continue?')

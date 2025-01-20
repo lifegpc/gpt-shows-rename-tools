@@ -83,7 +83,7 @@ def parse_result(result: str):
 
 async def get_response(cfg: Config, inp: str, files: List[str],
                        series_name: str = None, year: int = None, tmdb_id: int = None,
-                       tvdb_id: int = None, tmdb_data: TmdbData = None) -> Files:
+                       tvdb_id: int = None, tmdb_data: TmdbData = None, season_number: int = None) -> Files:
     prompt = f'The input directory is `{inp}`.'
     if tmdb_data:
         prompt += '\n' + gen_tmdb_data(tmdb_data)
@@ -96,6 +96,8 @@ async def get_response(cfg: Config, inp: str, files: List[str],
         prompt += f'\nThe TMDB ID is `{tmdb_id}`.'
     if tvdb_id:
         prompt += f'\nThe TVDB ID is `{tvdb_id}`.'
+    if season_number:
+        prompt += f'\nThe season number is `{season_number}`.'
     http_client = httpx.AsyncClient(proxy=cfg.proxy)
     client = openai.AsyncClient(api_key=cfg.api_key, base_url=cfg.base_url, http_client=http_client)
     if is_support_structed_output(cfg.model):
