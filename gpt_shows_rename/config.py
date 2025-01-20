@@ -1,8 +1,12 @@
 import argparse
 import openai
 import os.path
-from typing import Optional
+from typing import List, Optional
 import yaml
+
+
+DEFAULT_EXTS = ['.mp4', '.mkv', '.ass', '.srt']
+
 
 class Config:
     def __init__(self, args: argparse.Namespace, yaml_config: dict):
@@ -19,6 +23,21 @@ class Config:
     @property
     def base_url(self) -> Optional[str]:
         return self._args.base_url if self._args.base_url is not None else self._yaml_config.get('base_url', 'https://api.openai.com/v1')
+
+    @property
+    def exts(self) -> List[str]:
+        if self._args.exts:
+            return self._args.exts
+        exts = self._yaml_config.get('exts')
+        if isinstance(exts, str):
+            return exts.split(";")
+        if isinstance(exts, list):
+            aexts = []
+            for ext in exts:
+                if isinstance(ext, str):
+                    aexts.append(ext)
+            return aexts
+        return DEFAULT_EXTS
 
     @property
     def hardlink(self) -> bool:
@@ -91,6 +110,7 @@ def get_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument('-H', '--hardlink', action='store_true', help='Use hardlink instead of symlink.')
     parser.add_argument('-n', '--no-tmdb', action='store_true', help='Do not use TMDB API to obtain data.')
     parser.add_argument('-S', '--season-number', type=int, help='Season number (optional)')
+    parser.add_argument('-e', '--exts', action='append', help='File extensions to process (optional)')
     parser.add_argument('input', help='Input directory.')
     parser.add_argument('output', help='Output directory.')
     return parser

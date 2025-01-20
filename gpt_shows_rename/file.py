@@ -4,10 +4,7 @@ from typing import List
 from .gpt import Files
 
 
-EXTS = ['.mp4', '.mkv', '.ass', '.srt']
-
-
-def gen_input_list(dir: str, prefix: str = None) -> List[str]:
+def gen_input_list(dir: str, exts: List[str], prefix: str = None) -> List[str]:
     if prefix is None:
         prefix = dir
     re = []
@@ -16,11 +13,11 @@ def gen_input_list(dir: str, prefix: str = None) -> List[str]:
             continue
         path = os.path.join(dir, f)
         if os.path.isdir(path):
-            data = gen_input_list(path, prefix=prefix)
+            data = gen_input_list(path, exts, prefix)
             re += data
         else:
-            exts = os.path.splitext(f)[1]
-            if exts not in EXTS:
+            ext = os.path.splitext(f)[1]
+            if ext not in exts:
                 continue
             p = os.path.relpath(path, prefix)
             re.append(p)

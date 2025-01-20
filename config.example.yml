@@ -1,0 +1,14 @@
+# API KEY
+api_key: sk-xxxxxxx
+base_url: https://api.openai.com/v1
+# 设置默认模型。需采用OpenAI格式，其他模型可能需要使用 One-API 或 New-API 转换。
+model: gpt-4o
+# 请求时使用的代理地址
+# proxy: http://localhost:7890
+# TMDB API Key，可以在 https://www.themoviedb.org/settings/api 获取，设置后只要给定 tmdb-id 就能从 TMDB 获取数据然后传给GPT。
+# tmdb_api_key: eyxxxxxx
+# TMDB 返回结果语言
+tmdb_language: zh-CN
+# 要重命名的文件的扩展名
+exts: .mkv;.mp4;.srt;.ass
+#exts: [.mkv, .mp4, .srt]

@@ -7,7 +7,7 @@ import asyncio
 
 async def main():
     cfg = load_config()
-    files = gen_input_list(cfg.input)
+    files = gen_input_list(cfg.input, cfg.exts)
     tmdb_data = None
     if cfg.tmdb_id and not cfg.no_tmdb:
         if not cfg.tmdb_api_key:
