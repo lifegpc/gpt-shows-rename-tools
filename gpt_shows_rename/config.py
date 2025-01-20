@@ -27,7 +27,11 @@ class Config:
     @property
     def input(self) -> str:
         return self._args.input
-    
+
+    @property
+    def no_tmdb(self) -> bool:
+        return self._args.no_tmdb
+
     @property
     def output(self) -> str:
         return self._args.output
@@ -39,6 +43,14 @@ class Config:
     @property
     def series_name(self) -> Optional[str]:
         return self._args.series_name
+
+    @property
+    def tmdb_api_key(self) -> Optional[str]:
+        return self._args.tmdb_api_key if self._args.tmdb_api_key is not None else self._yaml_config.get('tmdb_api_key')
+
+    @property
+    def tmdb_language(self) -> Optional[str]:
+        return self._args.tmdb_language if self._args.tmdb_language is not None else self._yaml_config.get('tmdb_language')
 
     @property
     def tmdb_id(self) -> Optional[int]:
@@ -68,9 +80,12 @@ def get_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument('-c', '--config', type=str, default='./config.yml', help='Path to the configuration file')
     parser.add_argument('-s', '--series-name', type=str, help='Series name (optional)')
     parser.add_argument('-Y', '--year', type=int, help='Year of the series (optional)')
+    parser.add_argument('--tmdb-api-key', type=str, help='TMDB API key (optional)')
+    parser.add_argument('--tmdb-language', type=str, help='TMDB language (optional)')
     parser.add_argument('-t', '--tmdb-id', type=int, help='TMDB ID (optional)')
     parser.add_argument('-T', '--tvdb-id', type=int, help='TVDB ID (optional)')
-    parser.add_argument('-H', '--hardlink', action='store_true', help='Use hardlink instead of symlink (optional)')
+    parser.add_argument('-H', '--hardlink', action='store_true', help='Use hardlink instead of symlink.')
+    parser.add_argument('-n', '--no-tmdb', action='store_true', help='Do not use TMDB API to obtain data.')
     parser.add_argument('input', help='Input directory.')
     parser.add_argument('output', help='Output directory.')
     return parser
