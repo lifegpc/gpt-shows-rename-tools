@@ -76,9 +76,9 @@ async def get_response(cfg: Config, inp: str, files: List[str],
         prompt += f'\nThe TMDB ID is `{tmdb_id}`.'
     if tvdb_id:
         prompt += f'\nThe TVDB ID is `{tvdb_id}`.'
+    http_client = httpx.AsyncClient(proxy=cfg.proxy)
+    client = openai.AsyncClient(api_key=cfg.api_key, base_url=cfg.base_url, http_client=http_client)
     if is_support_structed_output(cfg.model):
-        http_client = httpx.AsyncClient(proxy=cfg.proxy)
-        client = openai.AsyncClient(api_key=cfg.api_key, base_url=cfg.base_url, http_client=http_client)
         result = None
         mes = ''
         refusal = ''
@@ -107,8 +107,6 @@ async def get_response(cfg: Config, inp: str, files: List[str],
         result = Files(**result)
         return result
     else:
-        http_client = httpx.AsyncClient(proxy=cfg.proxy)
-        client = openai.AsyncClient(api_key=cfg.api_key, base_url=cfg.base_url, http_client=http_client)
         res = await client.chat.completions.create(
             model=cfg.model,
             messages=[
