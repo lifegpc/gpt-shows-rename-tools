@@ -52,7 +52,7 @@ class Config:
     def model(self) -> str:
         if self._args.model:
             return self._args.model
-        return self._yaml_config.get("model", "gpt-4o-mini")
+        return self._yaml_config.get("model", "gpt-4o")
 
     @property
     def year(self) -> Optional[int]:
@@ -64,7 +64,7 @@ def get_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument('--api-key', type=str, help='API key for the GPT service')
     parser.add_argument('--base-url', type=str, help='Base URL for the GPT service')
     parser.add_argument('-p', '--proxy', type=str, help='Proxy URL (optional)')
-    parser.add_argument('-m', '--model', type=str, help='Model to use (default: gpt-4o-mini)')
+    parser.add_argument('-m', '--model', type=str, help='Model to use (default: gpt-4o)')
     parser.add_argument('-c', '--config', type=str, default='./config.yml', help='Path to the configuration file')
     parser.add_argument('-s', '--series-name', type=str, help='Series name (optional)')
     parser.add_argument('-Y', '--year', type=int, help='Year of the series (optional)')
